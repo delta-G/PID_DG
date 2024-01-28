@@ -19,3 +19,61 @@
  */
 
 #include "NewPID.h"
+
+void NewPID::enable(boolean b) {
+	enabled = b;
+}
+
+void NewPID::bumplessStart(double currentInput, double currentOutput, int skips) {
+	if (!enabled) {
+		enabled = true;
+		iTerm = currentOutput;
+		lastInput = currentInput;
+		if (iTerm > settings->outputMax) {
+			iTerm = settings->outputMax;
+		} else if (iTerm < settings->outputMin) {
+			iTerm = settings->outputMin;
+		}
+		skipCount = skips;
+		integral = 0;
+	}
+}
+
+
+double NewPID::compute(double input) {
+	
+	unsigned long cm = millis();
+	double deltaT = (double)(cm - lastRunTime) * 0.001;
+	
+	double error = settings->setpoint - input;
+	
+	double pTerm = settings->Kp * error;
+	double dTerm = 0.0;
+	
+	skipCount--;
+	if(skipCount <= 1){
+		skipCount = 1;
+		integral += error * deltaT;
+		iTerm = settings->Ki * integral;
+		if((iTerm > settings->outputMax) || (iTerm < settings->outputMin)) {
+			integral -= error * deltaT;  // To prevent runaway windup. 
+		}
+		double derivative = (input = lastInput) / deltaT;
+		dTerm = -(settings->Kd) * derivative;
+	}
+	
+	double output = pTerm + iTerm + dTerm;
+	
+	if (output > settings->outputMax) {
+		output = settings->outputMax;
+	} else if (output < settings->outputMin) {
+		output = settings->outputMin;
+	}
+	
+	lastInput = input;
+	lastRunTime = cm;
+	
+	return (settings->direction == REVERSE)? -output : output;
+}
+
+

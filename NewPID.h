@@ -18,13 +18,59 @@
 
  */
 
-
-
 #ifndef NEWPID_H
 #define NEWPID_H
+
+#include "Arduino.h"
+
+enum PID_Direction {
+	DIRECT, REVERSE
+};
+
+struct PID_Settings {
+	double setpoint;
+
+	double Kp;
+	double Ki;
+	double Kd;
+
+	double outputMax;
+	double outputMin;
+
+	PID_Direction direction;
+
+};
+
+class NewPID {
+private:
+	boolean enabled;
+	PID_Settings *settings;
+	
+	unsigned long lastRunTime;
+	double iTerm;
+	double integral;
+	double lastInput;
+	int skipCount;
+	
+
+public:
+
+	NewPID(PID_Settings *aSettings) :
+			settings(aSettings) {
+	}
+
+	void bumplessStart(double currentInput, double currentOutput, int skips);
+	void enable(boolean);
+	double compute(double input);
+
+};
+
 
 
 
 
 
 #endif // NEWPID_H
+
+
+
