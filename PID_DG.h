@@ -1,6 +1,6 @@
 /*
 
- NewPID.h  --  An Improved PID library for Arduino
+ PID_DG.h  --  An Improved PID library for Arduino
  Copyright (C) 2024  David C.
 
  This program is free software: you can redistribute it and/or modify
@@ -41,10 +41,9 @@ struct PID_Settings {
 
 };
 
-class NewPID {
+class PID_Class {
 private:
-	boolean enabled;
-	PID_Settings *settings;
+	PID_Settings &settings;
 	
 	unsigned long lastRunTime;
 	double iTerm;
@@ -55,12 +54,11 @@ private:
 
 public:
 
-	NewPID(PID_Settings *aSettings) :
+	PID_Class(PID_Settings &aSettings) :
 			settings(aSettings) {
 	}
 
 	void bumplessStart(double currentInput, double currentOutput, int skips);
-	void enable(boolean);
 	double compute(double input);
 
 };

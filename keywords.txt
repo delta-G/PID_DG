@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map For PID_DG.h
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+PID_Class	KEYWORD1
+PID_Settings	KEYWORD1
+PID_Direction	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+enable	KEYWORD2
+compute	KEYWORD2
+bumplessStart	KEYWORD2
+
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+
+
+#######################################
+# Constants (LITERAL1)
+#######################################
