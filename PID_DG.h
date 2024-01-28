@@ -60,6 +60,10 @@ public:
 
 	void bumplessStart(double currentInput, double currentOutput, int skips);
 	double compute(double input);
+	
+	PID_Class() = delete;
+	PID_Class(const PID_Class&) = delete;
+	PID_Class& operator =(const PID_Class&) = delete;
 
 };
 
